@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+  const [text, setText] = useState("xyz");
+  const [message, setMessage] = useState([]);
+
+  const onChangeFunc = (e) =>{
+    setText(e.target.value);
+  }
+
+  const messageFunc = () => {
+    setMessage(prev => [...prev, text]);
+    setText('');
+  }
+
+  const deleteMessage = (index) => {
+    setMessage(prev => prev.filter((msg,i) => i !== index ));
+  }
+
+  console.log(message, "message");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <input value={text} onChange={onChangeFunc} type='text' placeholder='Ekle'></input>
+      <button onClick={messageFunc}>Ekle</button>
+      {
+        message?.map((msg,i) => (
+        <div key={i}>
+          {msg}
+          <button onClick={() => deleteMessage(i)}>Sil</button>
+        </div>
+      ))}
+    </>
   );
 }
 
